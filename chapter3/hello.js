@@ -17,19 +17,17 @@ function serveStaticFile(res, path, contentType, responseCode) {
 
 const server = http.createServer((req, res) => {
   const path = req.url.replace(/\/?(?:\?.*)?$/, "").toLowerCase();
-  switch (path) {
-        case "": res.writeHead(200, { "Content-Type": "text/plain" });
-            res.end("Home");
-            break;
-        case "/about": res.writeHead(200, { "Content-Type": "text/plain" });
-            res.end("About");
-            break;
-        default: res.writeHead(404, { "Content-Type": "text/plain" });
-            res.end("This is not the page you are looking for...");
-            break;
+  switch(path){
+    case "": serveStaticFile(res, "/public/home.html", "text/html");
+             break;
+    case "/about": serveStaticFile(res, "/public/about.html", "text/html");
+             break;
+    case "/img/hello.png" : serveStaticFile(res, "/public/img/hello.png", "image/png");
+             break;
+    default: serveStaticFile(res, "/public/404.html", "text/html", 404);
+             break;
   }
 });
-
 
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
