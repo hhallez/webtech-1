@@ -1,0 +1,27 @@
+{
+  "name": "example",
+  "version": "0.0.1",
+  "description": "Minimalistic web app built around Express and Handlebars ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pcordemans/webtech.git"
+  },
+  "keywords": [
+    "proof",
+    "of",
+    "concept"
+  ],
+  "author": "Piet Cordemans",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/pcordemans/webtech/issues"
+  },
+  "homepage": "https://github.com/pcordemans/webtech#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
