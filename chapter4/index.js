@@ -1,5 +1,6 @@
 const express = require("express");
 const handlebars = require("express-handlebars");
+const quotes = require("./lib/quotes.js");
 
 const app = express();
 
@@ -11,7 +12,7 @@ app.use(express.static(__dirname + "/public"));
 
 //home page
 app.get("/", (req, res) => {
-  res.render("home");
+  res.render("home", {quote: quotes.random()});
 });
 
 // 404 page
