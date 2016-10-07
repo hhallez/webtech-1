@@ -6,7 +6,13 @@ const authors = require("./lib/authors.js");
 const app = express();
 
 app.set("port", process.env.PORT || 3000);
-app.engine("handlebars", handlebars({defaultLayout: "main"}));
+app.engine("handlebars", handlebars({
+  defaultLayout: "main", helpers: {
+        section: function (name, options) {
+            if (!this._sections) this._sections = {};
+            this._sections[name] = options.fn(this);
+            return null;
+        }}}));
 app.set("view engine", "handlebars");
 
 //middleware
@@ -17,7 +23,6 @@ app.use((req, res, next) =>{
   next();
 });
 
-
 //home page
 app.get("/", (req, res) => {
   res.render("home", {quote: quotes.random()});
@@ -27,6 +32,12 @@ app.get("/", (req, res) => {
 app.get("/about", (req, res) => {
   res.render("about");
 });
+
+//section page
+app.get("/section", (req, res) => {
+  res.render("section", {layout:"headbottom"});
+});
+
 
 // 404 page
 app.use((req, res) => {
