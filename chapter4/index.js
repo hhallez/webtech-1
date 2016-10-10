@@ -4,6 +4,7 @@ const quotes = require("./lib/quotes.js");
 const authors = require("./lib/authors.js");
 const bodyParser = require("body-parser");
 const formidable = require("formidable");
+const credentials = require("./credentials.js");
 
 const app = express();
 
@@ -28,13 +29,21 @@ app.use((req, res, next) =>{
   next();
 });
 
+app.use(require("cookie-parser")(credentials.cookieSecret));
+
 //home page
 app.get("/", (req, res) => {
-  res.render("home", {quote: quotes.random(), csrf:"CSRF token goes here"});
+  res.render("home", {quote: quotes.random(),
+                      csrf:"CSRF token goes here",
+                      cookieName: req.signedCookies.name,
+                      cookieEmail: req.signedCookies.email
+                      });
 });
 
 //processing the post request
 app.post("/process", (req, res) => {
+    res.cookie("name", req.body.name, { signed: true });
+    res.cookie("email", req.body.email, { signed: true });
     console.log("Form: " + req.query.form);
     console.log("CSRF: " + req.body._csrf);
     console.log("Name: " + req.body.name);
