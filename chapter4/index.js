@@ -2,6 +2,7 @@ const express = require("express");
 const handlebars = require("express-handlebars");
 const quotes = require("./lib/quotes.js");
 const authors = require("./lib/authors.js");
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -18,6 +19,9 @@ app.set("view engine", "handlebars");
 //middleware
 app.use(express.static(__dirname + "/public"));
 
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
 app.use((req, res, next) =>{
   res.locals.authors = authors.getAuthors();
   next();
@@ -25,7 +29,20 @@ app.use((req, res, next) =>{
 
 //home page
 app.get("/", (req, res) => {
-  res.render("home", {quote: quotes.random()});
+  res.render("home", {quote: quotes.random(), csrf:"CSRF token goes here"});
+});
+
+app.post("/process", (req, res) => {
+    console.log("Form: " + req.query.form);
+    console.log("CSRF: " + req.body._csrf);
+    console.log("Name: " + req.body.name);
+    console.log("Email: " + req.body.email);
+    res.redirect(303, "/thank-you");
+});
+
+//thank-you page
+app.get("/thank-you", (req, res) => {
+  res.render("thankyou");
 });
 
 //about page
