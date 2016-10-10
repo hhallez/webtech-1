@@ -3,6 +3,7 @@ const handlebars = require("express-handlebars");
 const quotes = require("./lib/quotes.js");
 const authors = require("./lib/authors.js");
 const bodyParser = require("body-parser");
+const formidable = require("formidable");
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
   res.render("home", {quote: quotes.random(), csrf:"CSRF token goes here"});
 });
 
+//processing the post request
 app.post("/process", (req, res) => {
     console.log("Form: " + req.query.form);
     console.log("CSRF: " + req.body._csrf);
@@ -55,6 +57,36 @@ app.get("/section", (req, res) => {
   res.render("section", {layout:"headbottom"});
 });
 
+//image upload page
+app.get("/upload", (req, res) => {
+    const now = new Date();
+    res.render("upload", {
+        year: now.getFullYear(), month: now.getMonth()
+    });
+});
+
+//file upload handling
+app.post("/upload/:year/:month", (req, res) => {
+  const form = new formidable.IncomingForm();
+  form.parse(req, (err, fields, files) => {
+    if(err) return res.redirect(303, "/error");
+    console.log("received fields: ");
+    console.log(fields);
+    console.log("received files: ");
+    console.log(files);
+    res.redirect(303, "/upload-succeeded");
+  });
+});
+
+//upload succes page
+app.get("/upload-succeeded", (req, res) => {
+  res.render("uploadsucceeded");
+});
+
+//error page
+app.get("/error", (req, res) => {
+  res.render("500");
+});
 
 // 404 page
 app.use((req, res) => {
