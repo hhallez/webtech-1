@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Find elements</title>
+  </head>
+  <body>
+      <div id="overhere">
+        <p>Red</p>
+        <ul>
+          <li>Blue</li>
+          <li class ="found">Green</li>
+        </ul>
+      </div>
+      <p class="found">Black</p>
+      <script>
+          var element = document.getElementById("overhere");
+          element.style.color = "red";
+
+          HTMLCollection.prototype.forEach = Array.prototype.forEach;
+
+          var elements = element.getElementsByTagName("ul");
+          elements.forEach(function(elem){
+            elem.style.color = "blue";
+          })
+
+          var found = element.getElementsByClassName("found");
+          found.forEach(function(elem){elem.style.color = "green";})
+
+      </script>
+  </body>
+</html>

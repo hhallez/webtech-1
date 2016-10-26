@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Create HTML elements</title>
+  </head>
+  <body>
+      <div id="content"></div>
+      <script>
+          var content = document.getElementById("content");
+
+          var paragraph = document.createElement("p");
+          paragraph.style.color = "red";
+          paragraph.style.border = "1px solid black";
+          paragraph.style.padding = "30px";
+
+          var text1 = document.createTextNode("Send ");
+          var emailTag = document.createElement("a");
+          var meText = document.createTextNode("me");
+          emailTag.href = "mailto:me@domain.com";
+          emailTag.appendChild(meText);
+          var text2 = document.createTextNode(" an e-mail.");
+
+          paragraph.appendChild(text1);
+          paragraph.appendChild(emailTag);
+          paragraph.appendChild(text2);
+
+          content.appendChild(paragraph);
+      </script>
+  </body>
+</html>
