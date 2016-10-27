@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>DOM navigation</title>
+  </head>
+  <body>
+      <p id="here">
+        Some text
+        <ul>
+          <li>First</li>
+          <li><div>Second</div></li>
+        </ul>
+
+      </p>
+      <script>
+          var element = document.getElementById("here");
+          var sibling = element.nextSibling;
+          sibling.appendChild(document.createElement("li"));
+          sibling.lastChild.innerHTML="Third";
+      </script>
+  </body>
+</html>

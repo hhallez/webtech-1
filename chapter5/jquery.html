@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>jQuery example</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+
+<style>
+	div {width:80px; margin:3px; height:500px; display: none}
+	
+	.test{background:red;}
+	
+	.blue {background:blue}
+
+	
+</style>
+
+<script>
+	$(document).ready(function(){
+	  	
+	    	$("div.test").add("p.quote").addClass("blue").slideDown("slow");
+	    	
+	  	
+	});
+
+	
+
+</script>
+</head>
+<body>
+	<div class="test">		
+	</div>	
+	<p class="quote">a quote</p>
+	<p> No quote here</p>
+</body>
+</html>
