@@ -1,5 +1,6 @@
 const express = require("express");
 const handlebars = require("express-handlebars");
+const info = require("./lib/info.js");
 
 const app = express();
 
@@ -25,6 +26,16 @@ app.get("/", (req, res) => {
 app.get("/info", (req, res) => {
   res.type("text/plain");
   res.send("Ajax did it!");
+});
+
+//Ajax Handlebars
+app.get("/featured", function(req,res){
+  res.render("featured", {layout:"headandbottom"});
+});
+
+//Ajax Handlebars
+app.get("/data/user", function(req, res){
+  res.json(info.getRandomUser());
 });
 
 // 404 page

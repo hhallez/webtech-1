@@ -1,0 +1,26 @@
+{{#section "head"}}
+  <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
+  <script id="userTemplate" type="text/x-handlebars-template">
+    Our featured user, \{{name}}, is currently \{{occupation}} in \{{location}}.
+  </script>
+{{/section}}
+
+<div id="userinfo"></div>
+<button id="btnFeaturedUser">Meet our users!</button>
+
+{{#section "bottom"}}
+  <script>
+    $(document).ready(function(){
+        var userTemplate = Handlebars.compile($("#userTemplate").html());
+
+      $("#btnFeaturedUser").on("click", function(evt){
+        $.ajax("/data/user", {
+          success: function(data){
+            $("#userinfo").html(userTemplate(data));
+          }
+        });
+      });
+    });
+  </script>
+
+{{/section}}
