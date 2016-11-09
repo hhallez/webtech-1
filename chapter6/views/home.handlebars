@@ -1,0 +1,23 @@
+{{#section "head"}}
+  <script> function loadDoc() {
+    var xmlhttp = new XMLHttpRequest();
+    //register callback
+    xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      document.getElementById("demo").innerHTML = xmlhttp.responseText;
+       }
+    }
+    xmlhttp.open("GET","info",true);
+	  xmlhttp.send();
+  }
+  </script>
+{{/section}}
+
+ <h2 id="demo">Let AJAX change this text</h2>
+ <button type="button" onclick="loadDoc()">
+	Change Content
+ </button>
+
+{{#section "bottom"}}
+
+{{/section}}
