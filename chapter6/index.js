@@ -29,12 +29,12 @@ app.get("/info", (req, res) => {
 });
 
 //Ajax Handlebars
-app.get("/featured", function(req,res){
+app.get("/featured", (req,res) => {
   res.render("featured", {layout:"headandbottom"});
 });
 
 //Ajax Handlebars
-app.get("/data/user", function(req, res){
+app.get("/data/user", (req, res) => {
   res.json(info.getRandomUser());
 });
 

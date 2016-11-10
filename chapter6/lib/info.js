@@ -1,4 +1,4 @@
-exports.getInfo = function() {
+exports.getInfo = () => {
   return  {
     authors: [
       {
@@ -20,7 +20,7 @@ exports.getInfo = function() {
   };
 };
 
-exports.getRandomUser = function() {
+exports.getRandomUser = () => {
   var users = exports.getInfo().authors;
   return users[Math.floor(Math.random() * users.length)];
-}
+};
