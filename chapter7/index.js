@@ -9,6 +9,18 @@ const dataDir = __dirname +"/data";
 const photoDir = dataDir + "/photo";
 const mv = require("mv");
 
+const mongoClient = require("mongodb").MongoClient;
+
+const dburl = "mongodb://localhost:27017/test";
+
+mongoClient.connect(dburl, (err, db) => {
+  if(err) console.error("Could not connect to the database");
+  else{
+    console.log("Connected succesfully to " + dburl);
+    db.close();
+  }
+});
+
 if(!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
 if(!fs.existsSync(photoDir)) fs.mkdirSync(photoDir);
 
