@@ -10,19 +10,17 @@ const dataDir = __dirname +"/data";
 const photoDir = dataDir + "/photo";
 const mv = require("mv");
 
-const mongoClient = require("mongodb").MongoClient;
-const userdb = require("./models/user.js");
+const user = require("./models/user.js");
 
 const dburl = credentials.dbconnection;
-let db;
+const mongoose = require("mongoose");
+const opts = {
+  server: {
+    socketOptions: {keepAlive: 1}
+  }
+};
 
-mongoClient.connect(dburl, (err, database) => {
-  if(err) throw err;
-  db = database;
-  app.listen(app.get("port"), () => {
-    console.log("Server started on http://localhost: " + app.get("port"));
-  });
-});
+mongoose.connect(dburl, opts);
 
 if(!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
 if(!fs.existsSync(photoDir)) fs.mkdirSync(photoDir);
@@ -54,10 +52,7 @@ app.post("/upload/:year/:month", (req, res) => {
   form.parse(req, (err, fields, files) => {
     if(err) return res.redirect(303, "/error");
 
-    userdb.insertUser({name: fields.name, email: fields.email},
-      db, (err, result) => {
-        if(err) return res.redirect(303, "/error");
-    });
+    new user({name: fields.name, email: fields.email}).save();
 
     const photo = files.photo;
     const dir = photoDir + "/" + Date.now();
@@ -78,9 +73,14 @@ app.get("/upload-succeeded", (req, res) => {
 });
 
 app.get("/users", (req, res) => {
-  userdb.findUsers(db, (err, result) => {
-    if(err) res.redirect(303, "/error");
-    else res.render("users", {users: result});
+  user.find({}, (err, users) => {
+    const context = {
+      users: users.map((user) => {
+        return{name: user.name,
+              email: user.email};
+      })
+    };
+    res.render("users", context);
   });
 });
 
@@ -100,4 +100,8 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500);
   res.render("500");
+});
+
+app.listen(app.get("port"), () => {
+  console.log("Server started on http://localhost:" + app.get("port"));
 });

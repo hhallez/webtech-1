@@ -1,11 +1,9 @@
-exports.findUsers = (db, callback) => {
-  db.collection("userCollection").find({}, (err, cursor) =>{
-    cursor.toArray(callback);
-  });
-};
+const mongoose = require("mongoose");
 
-exports.insertUser = (user, db, callback) => {
-  db.collection("userCollection").insertOne( user, (err, result) => {
-    callback(err, result);
-  });
-};
+const userSchema = mongoose.Schema({
+  name: String,
+  email: String
+});
+
+const user = mongoose.model("usersCollect", userSchema);
+module.exports = user;

@@ -22,6 +22,7 @@
     "express-handlebars": "^3.0.0",
     "formidable": "^1.0.17",
     "mongodb": "^2.2.11",
+    "mongoose": "^4.6.8",
     "mv": "^2.1.1"
   }
 }
