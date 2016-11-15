@@ -2,6 +2,7 @@ const express = require("express");
 const handlebars = require("express-handlebars");
 const formidable = require("formidable");
 const fs = require("fs");
+const credentials = require("./credentials.js");
 
 const app = express();
 
@@ -10,15 +11,17 @@ const photoDir = dataDir + "/photo";
 const mv = require("mv");
 
 const mongoClient = require("mongodb").MongoClient;
+const userdb = require("./models/user.js");
 
-const dburl = "mongodb://localhost:27017/test";
+const dburl = credentials.dbconnection;
+let db;
 
-mongoClient.connect(dburl, (err, db) => {
-  if(err) console.error("Could not connect to the database");
-  else{
-    console.log("Connected succesfully to " + dburl);
-    db.close();
-  }
+mongoClient.connect(dburl, (err, database) => {
+  if(err) throw err;
+  db = database;
+  app.listen(app.get("port"), () => {
+    console.log("Server started on http://localhost: " + app.get("port"));
+  });
 });
 
 if(!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
@@ -51,6 +54,11 @@ app.post("/upload/:year/:month", (req, res) => {
   form.parse(req, (err, fields, files) => {
     if(err) return res.redirect(303, "/error");
 
+    userdb.insertUser({name: fields.name, email: fields.email},
+      db, (err, result) => {
+        if(err) return res.redirect(303, "/error");
+    });
+
     const photo = files.photo;
     const dir = photoDir + "/" + Date.now();
     const path = dir + "/" + "uploadedphoto.jpg";
@@ -69,6 +77,13 @@ app.get("/upload-succeeded", (req, res) => {
   res.render("upload-succeeded");
 });
 
+app.get("/users", (req, res) => {
+  userdb.findUsers(db, (err, result) => {
+    if(err) res.redirect(303, "/error");
+    else res.render("users", {users: result});
+  });
+});
+
 //error page
 app.get("/error", (req, res) => {
   res.render("500");
@@ -85,8 +100,4 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500);
   res.render("500");
-});
-
-app.listen(app.get("port"), () => {
-  console.log("Server started on http://localhost: " + app.get("port"));
 });
