@@ -12,19 +12,25 @@ function serveStaticFile(res, path, contentType, responseCode) {
       res.writeHead(responseCode, {"Content-Type": contentType});
       res.end(data);
     }
-  })
+  });
 }
 
 const server = http.createServer((req, res) => {
   const path = req.url.replace(/\/?(?:\?.*)?$/, "").toLowerCase();
   switch (path) {
-        case "": res.writeHead(200, { "Content-Type": "text/plain" });
+        case "":
+            res.writeHead(200, { "Content-Type": "text/plain" });
             res.end("Home");
             break;
-        case "/about": res.writeHead(200, { "Content-Type": "text/plain" });
+        case "/about":
+            res.writeHead(200, { "Content-Type": "text/plain" });
             res.end("About");
             break;
-        default: res.writeHead(404, { "Content-Type": "text/plain" });
+        case "/cat.png" :
+            serveStaticFile(res,"/cat.png","image/png" );
+            break;
+        default:
+            res.writeHead(404, { "Content-Type": "text/plain" });
             res.end("This is not the page you are looking for...");
             break;
   }
