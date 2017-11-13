@@ -10,6 +10,9 @@ const session = require("express-session");
 const app = express();
 
 app.set("port", process.env.PORT || 3000);
+
+//view engine
+//with sections helper
 app.engine("handlebars", handlebars({
   defaultLayout: "main", helpers: {
         section: function (name, options) {
@@ -20,25 +23,51 @@ app.engine("handlebars", handlebars({
 app.set("view engine", "handlebars");
 
 //middleware
+//public folder
 app.use(express.static(__dirname + "/public"));
 
+//body parser processing form post
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+// partials
 app.use((req, res, next) =>{
   res.locals.authors = authors.getAuthors();
   next();
 });
 
+// cookies
 app.use(session({
   secret: credentials.cookieSecret,
   resave: false,
   saveUninitialized: false
 }));
 
-//home page
+//rendering template
 app.get("/", (req, res) => {
-  res.render("home", {quote: quotes.random(),
+  res.render("home");
+});
+
+//rendering template with data
+app.get("/data", (req, res) => {
+  res.render("data", {simpleData:"This title has been injected",
+                      fruit:[{name: "Banana", value: 42}, {name: "Apple", value: 43}]
+  });
+});
+
+//partials page
+app.get("/about", (req, res) => {
+  res.render("about");
+});
+
+//section page
+app.get("/section", (req, res) => {
+  res.render("section", {layout:"headbottom"});
+});
+
+//newsletter page simple form upload + cookies
+app.get("/newsletter", (req, res) => {
+  res.render("newsletter", {quote: quotes.random(),
                       csrf:"CSRF token goes here",
                       cookieName: req.session.name,
                       cookieEmail: req.session.email
@@ -61,16 +90,6 @@ app.get("/thank-you", (req, res) => {
   res.render("thankyou");
 });
 
-//about page
-app.get("/about", (req, res) => {
-  res.render("about");
-});
-
-//section page
-app.get("/section", (req, res) => {
-  res.render("section", {layout:"headbottom"});
-});
-
 //image upload page
 app.get("/upload", (req, res) => {
     const now = new Date();
@@ -79,7 +98,7 @@ app.get("/upload", (req, res) => {
     });
 });
 
-//file upload handling
+//complex file upload handling
 app.post("/upload/:year/:month", (req, res) => {
   const form = new formidable.IncomingForm();
   form.parse(req, (err, fields, files) => {
