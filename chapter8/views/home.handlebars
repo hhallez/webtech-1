@@ -1,9 +1,18 @@
-<h3>Please login</h3>
+{{#section "head"}}
 
-<form enctype="multipart/form-data" action="/authenticate" method="post">
-  <label>Username</label>
-  <input type="text" id="fieldUserName" name="username">
-  <label>Password</label>
-  <input type="text" id="fieldPassword" name="password">
-  <button type="submit">Submit</button>
-  </form>
+{{/section}}
+
+ <h2 id="demo">Let jQuery AJAX change this text</h2>
+ <button>
+	Change Content
+ </button>
+
+{{#section "bottom"}}
+<script>
+$(document).ready(function(){
+  $("button").click(function(){
+      $("#demo").load("info");
+  });
+});
+</script>
+{{/section}}

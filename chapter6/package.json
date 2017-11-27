@@ -1,7 +1,7 @@
 {
-  "name": "chapter6",
+  "name": "chapter8",
   "version": "0.0.1",
-  "description": "Ajax examples project",
+  "description": "Security examples project",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,14 +11,14 @@
     "url": "git+https://github.com/pcordemans/webtech.git"
   },
   "keywords": [
-    "Ajax",
-    "Express",
-    "jQuery"
+    "HTTPS",
+    "Passport"
   ],
   "author": "Piet Cordemans",
   "license": "Apache-2.0",
   "dependencies": {
     "express": "^4.14.0",
-    "express-handlebars": "^3.0.0"
+    "express-handlebars": "^3.0.0",
+    "formidable": "^1.0.17"
   }
 }
